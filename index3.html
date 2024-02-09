@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ka>ulat!</title>
+<style>
+    
+    .container {
+        max-width: 600px;
+        max-height: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 40px;
+        background-color: rgba(22, 42, 97, 0.849);
+        margin-top: 10em;
+        margin-bottom: 10em;
+        
+    }
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.993);
+        color: rgba(22, 42, 97, 0.849);
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    button:hover {
+        background-color: rgba(4, 255, 221, 0.849);
+        color: whitesmoke;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        color:rgba(22, 42, 97, 0.849);
+        background-color: whitesmoke;
+
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        
+    }
+    th {
+        background-color: #f2f2f2;
+        color:rgba(22, 42, 97, 0.849);
+    }
+    #result {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    h2 {
+        color: whitesmoke;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+body {
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: auto;
+    background: linear-gradient(315deg, rgba(101,0,94,1) 3%, rgba(60,132,206,1) 38%, rgba(48,238,226,1) 68%, rgba(255,25,25,1) 98%);
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 1000% 0 0;
+    position: fixed;
+    width: 200%;
+    height: 12em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s -1s reverse infinite;
+    opacity: 0.9;
+}
+
+@keyframes wave {
+    2% {
+        transform: translateX(1);
+    }
+
+    25% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(-50%);
+    }
+
+    75% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(1);
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>CGPA Calculator</h2>
+    <label for="course">Enter Course Name:</label>
+    <input type="text" id="course" placeholder="Enter Course Name">
+    <label for="credit">Enter Credit Units:</label>
+    <input type="number" id="credit" placeholder="Enter Credit Hours">
+    <label for="grade">Enter Grade:</label>
+    <input type="text" id="grade" placeholder="Enter Grade (e.g., A, B, C)">
+    <button onclick="calculateCGPA()">Add Course</button>
+    <button onclick="clearTable()">Clear Table</button>
+    <div id="result">
+        
+        <table id="courseTable">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Credit</th>
+                    <th>Grade Point</th>
+                    <th>CGPA Contribution</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <h3>Overall CGPA: <span id="overallCGPA">0.00</span></h3>
+</div>
+
+<script>
+    let totalCredit = 0;
+    let totalGradePoints = 0;
+
+    function calculateCGPA() {
+        const courseInput = document.getElementById('course');
+        const creditInput = document.getElementById('credit');
+        const gradeInput = document.getElementById('grade');
+
+        const course = courseInput.value;
+        const credit = parseFloat(creditInput.value);
+        const grade = gradeInput.value.toUpperCase();
+
+        if (course.trim() === '') {
+            alert('Please enter a course name.');
+            return;
+        }
+
+        if (isNaN(credit) || credit <= 0) {
+            alert('Please enter a valid credit hour.');
+            return;
+        }
+
+        if (!/^[A-D]|F$/.test(grade)) {
+            alert('Please enter a valid grade (A, B, C, D, F).');
+            return;
+        }
+
+        let gradePoint;
+        switch (grade) {
+            case 'A':
+                gradePoint = 5.0;
+                break;
+            case 'B':
+                gradePoint = 4.0;
+                break;
+            case 'C':
+                gradePoint = 3.0;
+                break;
+            case 'D':
+                gradePoint = 2.0;
+                break;
+            case 'E':
+                gradePoint = 1.0;
+                break;
+            default:
+                gradePoint = 0.0;
+        }
+
+        totalGradePoints += credit * gradePoint;
+        totalCredit += credit;
+
+        const cgpa = (totalGradePoints / totalCredit).toFixed(2);
+        document.getElementById('overallCGPA').textContent = cgpa;
+
+        // Update course table
+        const courseTable = document.getElementById('courseTable').getElementsByTagName('tbody')[0];
+        const newRow = courseTable.insertRow();
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+        cell1.textContent = course;
+        cell2.textContent = credit;
+        cell3.textContent = gradePoint;
+        cell4.textContent = (credit * gradePoint).toFixed(2);
+
+        courseInput.value = '';
+        creditInput.value = '';
+        gradeInput.value = '';
+    }
+
+    function clearTable() {
+        const courseTable = document.getElementById('courseTable').getElementsByTagName('tbody')[0];
+        while (courseTable.firstChild) {
+            courseTable.removeChild(courseTable.firstChild);
+        }
+        totalCredit = 0;
+        totalGradePoints = 0;
+        document.getElementById('overallCGPA').textContent = '0.00';
+    }
+</script>
+
+</body>
+</html>
